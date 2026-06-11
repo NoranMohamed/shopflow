@@ -48,7 +48,7 @@ text
 
 > These resources cannot be created by Terraform because Terraform needs them to store state and push images.
 
-```bash
+
 # Create S3 bucket for Terraform state (must be globally unique)
 aws s3api create-bucket --bucket shopflow-terraform-<yourname> --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1
 aws s3api put-bucket-versioning --bucket shopflow-terraform-<yourname> --versioning-configuration Status=Enabled
@@ -60,13 +60,13 @@ aws ecr create-repository --repository-name shopflow --region eu-west-1
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export ECR_URI=$AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/shopflow
 Phase 1 – Deploy Infrastructure
-bash
+
 cd terraform
 terraform init
 terraform plan -var="ecr_image_uri=${ECR_URI}:latest" -var="db_password=YourStrongPass123!" -out=tfplan
 terraform apply tfplan
 Phase 2 – Build & Push Docker Image
-bash
+
 cd ../app
 docker build -t shopflow .
 docker tag shopflow:latest ${ECR_URI}:latest
