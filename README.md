@@ -5,7 +5,6 @@
 ![Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?style=for-the-badge\&logo=docker\&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-%232671E5.svg?style=for-the-badge\&logo=githubactions\&logoColor=white)
 
-[![ShopFlow Deploy](https://github.com/NoranMohamed/shopflow/actions/workflows/deploy.yml/badge.svg)](https://github.com/NoranMohamed/shopflow/actions/workflows/deploy.yml)
 
 ## 📖 Overview
 
