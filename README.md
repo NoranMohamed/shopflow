@@ -7,7 +7,6 @@
 
 **ShopFlow** is a fully automated, cloud-native e-commerce platform deployed on AWS. It leverages Infrastructure as Code (Terraform), containerization (Docker), and a CI/CD pipeline (GitHub Actions) to achieve zero-touch deployments from code push to production.
 
-> 🚀 **Live demo**: [http://shopflow-alb-1290382372.eu-west-1.elb.amazonaws.com](http://shopflow-alb-1290382372.eu-west-1.elb.amazonaws.com)
 
 ---
 
