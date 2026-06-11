@@ -1,4 +1,3 @@
-```markdown
 # 🛍️ ShopFlow – Production-Ready E-Commerce Platform on AWS
 
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
@@ -13,14 +12,13 @@
 ---
 
 ## 📐 Architecture Overview
-
-```
 User → ALB (public) → Auto Scaling Group (EC2) → Docker Container (nginx)
-                          ↓
-                    RDS MySQL (private)
-                          ↓
-                    CloudWatch (monitoring + alerts)
-```
+↓
+RDS MySQL (private)
+↓
+CloudWatch (monitoring + alerts)
+
+text
 
 - **Networking**: VPC with public & private subnets across 2 Availability Zones (eu-west-1a & 1b)
 - **Compute**: Auto Scaling Group (min 2, max 3) using Launch Template – runs Dockerized app
@@ -61,88 +59,67 @@ aws ecr create-repository --repository-name shopflow --region eu-west-1
 # Export Account ID & ECR URI
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export ECR_URI=$AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/shopflow
-```
-
-### Phase 1 – Deploy Infrastructure
-
-```bash
+Phase 1 – Deploy Infrastructure
+bash
 cd terraform
 terraform init
 terraform plan -var="ecr_image_uri=${ECR_URI}:latest" -var="db_password=YourStrongPass123!" -out=tfplan
 terraform apply tfplan
-```
-
-### Phase 2 – Build & Push Docker Image
-
-```bash
+Phase 2 – Build & Push Docker Image
+bash
 cd ../app
 docker build -t shopflow .
 docker tag shopflow:latest ${ECR_URI}:latest
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_URI}
 docker push ${ECR_URI}:latest
-```
-
-### Phase 3 – Refresh EC2 Instances
-
-```bash
+Phase 3 – Refresh EC2 Instances
+bash
 aws autoscaling start-instance-refresh --auto-scaling-group-name shopflow-asg --region eu-west-1
-```
+After 2‑3 minutes, visit the app_url output – you should see the ShopFlow homepage.
 
-After 2‑3 minutes, visit the `app_url` output – you should see the ShopFlow homepage.
+🔁 CI/CD Pipeline (GitHub Actions)
+The pipeline is triggered on every push to main:
 
----
+Build & Push – builds Docker image, pushes to ECR
 
-## 🔁 CI/CD Pipeline (GitHub Actions)
+Terraform Plan – generates an execution plan
 
-The pipeline is triggered on every push to `main`:
+Manual Approval – waits for approval (production environment)
 
-1. **Build & Push** – builds Docker image, pushes to ECR
-2. **Terraform Plan** – generates an execution plan
-3. **Manual Approval** – waits for approval (production environment)
-4. **Terraform Apply** – applies the saved plan
-5. **Smoke Test** – curls the ALB endpoint to verify deployment
+Terraform Apply – applies the saved plan
 
-> 🔐 **Security note**: The pipeline uses OIDC (recommended) or long‑lived keys. For production, switch to [AWS OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) to avoid static credentials.
+Smoke Test – curls the ALB endpoint to verify deployment
 
----
+🔐 Security note: The pipeline uses OIDC (recommended) or long‑lived keys. For production, switch to AWS OIDC to avoid static credentials.
 
-## 🧹 Cleanup
-
+🧹 Cleanup
 To avoid ongoing costs, destroy all resources when not needed:
 
-```bash
+bash
 cd terraform
 terraform destroy -var="ecr_image_uri=${ECR_URI}:latest" -var="db_password=YourStrongPass123!"
-```
-
 Also manually delete the S3 bucket (after emptying it) and the ECR repository if no longer required.
 
----
+📊 Monitoring & Alerts
+Dashboard: AWS Console → CloudWatch → Dashboards → shopflow-dashboard
 
-## 📊 Monitoring & Alerts
+Alerts: SNS email subscription – you will receive an email when CPU > 70% for 2 consecutive periods (every 2 minutes)
 
-- **Dashboard**: AWS Console → CloudWatch → Dashboards → `shopflow-dashboard`
-- **Alerts**: SNS email subscription – you will receive an email when CPU > 70% for 2 consecutive periods (every 2 minutes)
-- **Logs**: Container logs are sent to CloudWatch Log Group `/shopflow/app`
+Logs: Container logs are sent to CloudWatch Log Group /shopflow/app
 
----
-
-## 🤝 Contributing
-
+🤝 Contributing
 Contributions are welcome! Please open an issue or submit a pull request.
 
----
+📝 License
+This project is licensed under the MIT License – see the LICENSE file for details.
 
-## 👩‍💻 Author
+👩‍💻 Author
+Noran Mohamed
+GitHub
 
-**Noran Mohamed**  
-[GitHub](https://github.com/NoranMohamed)
+🙏 Acknowledgements
+AWS free tier for learning & experimentation
 
----
+HashiCorp Terraform documentation
 
-## 🙏 Acknowledgements
-
-- AWS free tier for learning & experimentation
-- HashiCorp Terraform documentation
-- Docker community
-```
+Docker community
