@@ -1,0 +1,12 @@
+variable "project_name"              {}
+variable "vpc_id"                    {}
+variable "public_subnet_id"          {}
+variable "public_subnet_b_id"        {}
+variable "private_subnet_id"         {}
+variable "aws_region"                {}
+variable "ami_id"                    {}
+variable "ecr_image_uri"             {}
+variable "ec2_instance_profile_name" {}
+variable "public_key_path" {
+  default = "~/.ssh/id_rsa.pub"
+}
