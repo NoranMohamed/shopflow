@@ -11,3 +11,5 @@ variable "db_password" {
 }
 
 variable "ecr_image_uri" {}
+
+variable "ec2_public_key" {}

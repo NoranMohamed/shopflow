@@ -67,7 +67,7 @@ resource "aws_security_group" "app" {
 # Key Pair
 resource "aws_key_pair" "shopflow" {
   key_name   = "${var.project_name}-key"
-  public_key = file(var.public_key_path)
+  public_key = var.ec2_public_key
 }
 
 # Bastion Host

@@ -64,6 +64,7 @@ jobs:
           terraform plan \
             -var="ecr_image_uri=${{ needs.build-and-push.outputs.image_uri }}" \
             -var="db_password=${{ secrets.TF_VAR_db_password }}" \
+            -var="ec2_public_key=${{ secrets.EC2_PUBLIC_KEY }}" \
             -out=tfplan
         working-directory: terraform
 

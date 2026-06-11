@@ -20,6 +20,7 @@ module "ec2" {
   ami_id                    = "ami-0720a3ca2735bf2fa"
   ecr_image_uri             = var.ecr_image_uri
   ec2_instance_profile_name = module.iam.ec2_instance_profile_name
+  ec2_public_key            = var.ec2_public_key
 }
 
 module "rds" {

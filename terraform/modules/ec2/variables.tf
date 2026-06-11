@@ -7,6 +7,4 @@ variable "aws_region"                {}
 variable "ami_id"                    {}
 variable "ecr_image_uri"             {}
 variable "ec2_instance_profile_name" {}
-variable "public_key_path" {
-  default = "~/.ssh/id_rsa.pub"
-}
+variable "ec2_public_key"            {}
